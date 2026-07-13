@@ -30,23 +30,78 @@ const path = require("path");
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 
+//mongoose.connect(process.env.MONGO_URI)
+//.then(() => {
+  //  console.log("Connected");
+//})
+//.catch(err => {
+  //  console.log("ERROR NAME:", err.name);
+    //console.log("ERROR MESSAGE:", err.message);
+    //console.log("FULL ERROR:");
+    //console.dir(err, { depth: null });
+//});
 // MongoDB Connection
-
 mongoose.connect(process.env.MONGO_URI)
-
 .then(() => {
-
-    console.log("MongoDB Connected Successfully");
-
+    console.log("✅ MongoDB Connected Successfully");
 })
-
-.catch((error)=>{
-
-    console.log("MongoDB Connection Failed");
-
-    console.log(error);
-
+.catch(err => {
+    console.log("❌ MongoDB Connection Error:");
+    console.log("   Name:", err.name);
+    console.log("   Message:", err.message);
+    if (err.cause) {
+        console.log("   Cause:", err.cause);
+    }
 });
+
+// Add event listeners for better debugging
+mongoose.connection.on('connected', () => {
+    console.log('MongoDB connected to the database');
+});
+
+mongoose.connection.on('error', (err) => {
+    console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('MongoDB disconnected');
+});
+//mongoose.connect(process.env.MONGO_URI)
+//.then(() => {
+    //console.log("MongoDB Connected Successfully");
+//})
+//.catch(err => {
+    //console.log("NAME:", err.name);
+    //console.log("MESSAGE:", err.message);
+
+    //if (err.cause) {
+       // console.dir(err.cause, { depth: null });
+   // }
+//});
+//.catch((err) => {
+  //  console.log("NAME:", err.name);
+    //console.log("MESSAGE:", err.message);
+    //console.log("CAUSE:", err.cause);
+    //process.exit(1);
+//});
+// MongoDB Connection
+//console.log(process.env.MONGO_URI);
+
+//mongoose.connect(process.env.MONGO_URI)
+
+//.then(() => {
+
+    //console.log("MongoDB Connected Successfully");
+
+//})
+
+//.catch((error)=>{
+
+    //console.log("MongoDB Connection Failed");
+
+    //console.log(error);
+
+//});
 
 
 const userSchema = new mongoose.Schema({
